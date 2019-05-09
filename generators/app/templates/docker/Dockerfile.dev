@@ -1,0 +1,3 @@
+FROM andrewstucki/dev:0.0.1
+
+ENTRYPOINT /bin/wait-for postgres-dev:5432 -- /bin/sh -c "yarn install --no-progress && buffalo pop migrate && buffalo dev"

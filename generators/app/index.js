@@ -6,13 +6,13 @@ const files = [
   ".dockerignore",
   ".env",
   ".gitignore",
-  "Dockerfile",
-  "docker-compose.yml",
+  "go.sum",
   "inflections.json",
   "Makefile",
   "package.json",
   "README.md",
   "webpack.config.js",
+  "yarn.lock",
   "actions/actions_test.go",
   "actions/home.go",
   "actions/home_test.go",
@@ -22,9 +22,10 @@ const files = [
   "assets/images/favicon.ico",
   "assets/images/logo.svg",
   "assets/js/application.js",
-  "ci/Dockerfile",
-  "ci/docker-compose.yml",
   "config/buffalo-plugins.toml",
+  "docker/Dockerfile.dev",
+  "docker/Dockerfile.test",
+  "docker/docker-compose.yml",
   "fixtures/sample.toml",
   "grifts/db.go",
   "locales/all.en-us.yaml",
@@ -86,22 +87,9 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.on(`yarnInstall:end`, () => {
-      this.spawnCommandSync("go", ["mod", "download"]);
-      this.spawnCommandSync("docker-compose", [
-        "-f",
-        "ci/docker-compose.yml",
-        "build"
-      ]);
-      this.spawnCommandSync("git", ["init"]);
-      this.spawnCommandSync("git", ["add", "."]);
-      this.spawnCommandSync("git", ["commit", "-m", "Bootstrap application"]);
-    });
-
-    this.installDependencies({
-      yarn: true,
-      npm: false,
-      bower: false
-    });
+    this.spawnCommandSync("make", ["test"]);
+    this.spawnCommandSync("git", ["init"]);
+    this.spawnCommandSync("git", ["add", "."]);
+    this.spawnCommandSync("git", ["commit", "-m", "Bootstrap application"]);
   }
 };
