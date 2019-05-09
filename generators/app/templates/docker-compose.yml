@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/src
+      - go_cache:/cache
+      - go_mod_cache:/go/pkg/mod
+      - node_cache:/src/node_modules
+    environment:
+      - DEV_DATABASE_URL="postgres://postgres:postgres@postgres:5432/dev?sslmode=disable"
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+  postgres:
+    image: postgres:11.2-alpine
+    expose:
+      - "5432"
+volumes:
+  go_cache:
+  go_mod_cache:
+  node_cache:

@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  test:
+    build:
+      context: ..
+      dockerfile: ci/Dockerfile
+    environment:
+      - TEST_DATABASE_URL="postgres://postgres:postgres@postgres:5432/test?sslmode=disable"
+    volumes:
+      - ..:/src
+      - go_cache:/cache
+      - go_mod_cache:/go/pkg/mod
+      - node_cache:/src/node_modules
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:11.2-alpine
+    environment:
+      - POSTGRES_DB=test
+volumes:
+  go_cache:
+  go_mod_cache:
+  node_cache:
