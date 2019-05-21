@@ -90,6 +90,5 @@ module.exports = class extends Generator {
     this.spawnCommandSync("make", ["test"]);
     this.spawnCommandSync("git", ["init"]);
     this.spawnCommandSync("git", ["add", "."]);
-    this.spawnCommandSync("git", ["commit", "-m", "Bootstrap application"]);
   }
 };
